@@ -1,0 +1,39 @@
+<mat-toolbar class="header">
+  <button mat-icon-button (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Retail Warehouse</span>
+</mat-toolbar>
+  
+<mat-drawer-container class="main-container" autosize>
+  <mat-drawer #drawer mode="side" opened class="main-sidebar">
+    <div class="sidebar-menu">
+      <div class="header-menu">
+          <button mat-button routerLink="/backoffice/dashboard">
+              <mat-icon>shopping_cart</mat-icon> Cassa
+          </button>
+          
+          <button mat-button routerLink="/backoffice/warehouse">
+              <mat-icon>inventory_2</mat-icon> Magazzino
+          </button>
+          
+          <button mat-button routerLink="/backoffice/pickup">
+              <mat-icon>local_shipping</mat-icon> Ritiro
+          </button>
+
+          <button mat-button routerLink="/backoffice/product">
+              <mat-icon>category</mat-icon> Prodotti
+          </button>
+      </div>
+      <div class="footer-menu">
+          <button mat-button type="button" (click)="logout()">
+              <mat-icon>logout</mat-icon> Logout
+          </button>
+      </div>
+    </div>
+  </mat-drawer>
+
+  <mat-drawer-content class="main-content">
+    <router-outlet></router-outlet> 
+  </mat-drawer-content>
+</mat-drawer-container>

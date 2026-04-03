@@ -1,0 +1,136 @@
+@use '@angular/material' as mat;
+@use './theme/themes' as themes;
+@use './theme/colors' as colors;
+
+// Material theme (M3).
+@include mat.core();
+
+// Default = dark (tuo layout attuale).
+html {
+  @include mat.all-component-themes(themes.$dark-theme);
+
+  // Testo da palette app (`:root` / `html.theme-light`): cascata + token Material allineati a `--app-fg`.
+  color: var(--app-fg);
+  --mat-sys-on-surface: var(--app-fg);
+  --mat-sys-on-background: var(--app-fg);
+  --mat-toolbar-container-text-color: var(--app-fg);
+  --mat-button-text-label-text-color: var(--app-fg);
+  --mat-button-text-state-layer-color: var(--app-fg);
+  --mat-icon-button-icon-color: var(--app-fg);
+
+  // mat-flat-button (filled): stile invertito — sfondo neutro, testo/ripple primary (non primary pieno + on-primary).
+  --mat-button-filled-container-color: var(--app-fg);
+  --mat-button-filled-label-text-color: var(--app-bg);
+  --mat-button-filled-state-layer-color: var(--app-bg);
+  // mat-stroked-button (outlined): bordo + testo primary (come prima).
+  --mat-button-outlined-label-text-color: var(--mat-sys-primary);
+  --mat-button-outlined-outline-color: var(--mat-sys-primary);
+  --mat-button-outlined-state-layer-color: var(--mat-sys-primary);
+
+  // Dialog popup errore / attenzione (shared `UiAlertDialog`)
+  --app-alert-error-surface: color-mix(in srgb, var(--mat-sys-error) 26%, var(--app-bg-component));
+  --app-alert-error-accent: var(--mat-sys-error);
+  --app-alert-warning-surface: color-mix(
+    in srgb,
+    #{colors.$alert-warning-accent} 28%,
+    var(--app-bg-component)
+  );
+  --app-alert-warning-accent: #{colors.$alert-warning-accent};
+}
+
+html.theme-light {
+  @include mat.all-component-themes(themes.$light-theme);
+
+  color: var(--app-fg);
+  --mat-sys-on-surface: var(--app-fg);
+  --mat-sys-on-background: var(--app-fg);
+  --mat-toolbar-container-text-color: var(--app-fg);
+  --mat-button-text-label-text-color: var(--app-fg);
+  --mat-button-text-state-layer-color: var(--app-fg);
+  --mat-icon-button-icon-color: var(--app-fg);
+
+  --mat-button-filled-container-color: var(--app-filled-btn-bg);
+  --mat-button-filled-label-text-color: var(--app-filled-btn-fg);
+  --mat-button-filled-state-layer-color: var(--app-filled-btn-fg);
+  --mat-button-filled-ripple-color: color-mix(
+    in srgb,
+    var(--app-filled-btn-fg) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%),
+    transparent
+  );
+  --mat-button-outlined-label-text-color: var(--mat-sys-primary);
+  --mat-button-outlined-outline-color: var(--mat-sys-primary);
+  --mat-button-outlined-state-layer-color: var(--mat-sys-primary);
+
+  --app-alert-error-surface: color-mix(in srgb, var(--mat-sys-error) 22%, var(--app-bg-component));
+  --app-alert-error-accent: var(--mat-sys-error);
+  --app-alert-warning-surface: color-mix(
+    in srgb,
+    #{colors.$alert-warning-accent} 24%,
+    var(--app-bg-component)
+  );
+  --app-alert-warning-accent: #{colors.$alert-warning-accent};
+}
+
+// Dialog form prodotto (anagrafica)
+.product-form-dialog-panel .mat-mdc-dialog-surface {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--app-bg-component);
+  border: 1px solid color-mix(in srgb, var(--app-fg) 14%, transparent);
+  box-shadow: 0 8px 32px color-mix(in srgb, #000 45%, transparent);
+}
+
+// Container dialog Material: sfondo opaco (no trasparenza sul backdrop)
+.ui-alert-dialog-panel .mat-mdc-dialog-surface {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--app-bg-component);
+  border: 1px solid color-mix(in srgb, var(--app-fg) 14%, transparent);
+  box-shadow: 0 8px 32px color-mix(in srgb, #000 45%, transparent);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  background: var(--app-bg);
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --app-bg: #{colors.$app-bg-dark};
+  --app-fg: #{colors.$app-fg-dark};
+  --app-bg-component: #{colors.$app-bg-component-dark};
+  --app-filled-btn-bg: #{colors.$filled-button-bg};
+  --app-filled-btn-fg: #{colors.$filled-button-fg};
+}
+
+html.theme-light {
+  --app-bg: #{colors.$app-bg-light};
+  --app-fg: #{colors.$app-fg-light};
+  --app-bg-component: #{colors.$app-bg-component-light};
+}
+
+// -----------------------------
+// Buttons
+// -----------------------------
+// In Material M3, `color="primary"` usa direttamente la palette `primary` del tema.
+// Per usare la palette `tertiary` su un bottone in modo esplicito, usa:
+//   <button mat-flat-button class="btn-tertiary">...</button>
+.btn-tertiary {
+  @include mat.button-color(themes.$dark-theme, $color-variant: tertiary);
+}
+
+html.theme-light .btn-tertiary {
+  @include mat.button-color(themes.$light-theme, $color-variant: tertiary);
+}

@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+
+// Palettes Material che usi come "brand".
+// Puoi sostituire queste palette con altre Material (mat.$...palette)
+// oppure crearne di custom.
+$brand-primary: mat.$azure-palette;
+$brand-tertiary: mat.$magenta-palette;
+
+// Colori app (non solo Material) usati in layout personalizzati.
+//
+// Dark theme
+$app-bg-dark: #151515;
+$app-fg-dark: #e6eaf2;
+$app-bg-component-dark: #1d1d1d;
+
+// Light theme
+$app-bg-light: #ffffff;
+$app-fg-light: #0b1220;
+$app-bg-component-light: #eaeaea;
+
+// Bottone filled (mat-flat): bianco + testo scuro
+$filled-button-bg: #ffffff;
+$filled-button-fg: $app-fg-light;
+
+// Dialog alert “Attenzione” (tono ambra, indipendente dal tertiary Material)
+$alert-warning-accent: #e8a317;
+

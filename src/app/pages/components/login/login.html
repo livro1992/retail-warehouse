@@ -1,0 +1,37 @@
+<div class="page">
+    <app-ui-card 
+        [title]="'Accedi'" 
+        [subtitle]="'Retail Warehouse'" 
+        [appearance]="'outlined'"
+    >
+      <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <app-ui-text-field
+          [label]="'Email'"
+          [type]="'email'"
+          [autocomplete]="'email'"
+          [placeholder]="'nome@azienda.it'"
+          [control]="email"
+        />
+
+        <app-ui-password-field
+          [label]="'Password'"
+          [autocomplete]="'current-password'"
+          [placeholder]="'••••••••'"
+          [control]="password"
+        />
+
+        <button mat-flat-button color="primary" type="submit">
+          <span *ngIf="!loading()">Login</span>
+          <span class="spinner" *ngIf="loading()">
+            <mat-spinner diameter="18"></mat-spinner>
+          </span>
+        </button>
+
+        <mat-divider></mat-divider>
+
+        <button mat-stroked-button color="primary" type="button" (click)="fillDemo()">
+          Compila demo
+        </button>
+      </form>
+    </app-ui-card>
+</div>

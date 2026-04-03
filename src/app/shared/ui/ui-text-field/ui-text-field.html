@@ -1,0 +1,16 @@
+<mat-form-field class="ui-field" [appearance]="appearance()">
+    <mat-label>{{ label() }}</mat-label>
+    <input
+      matInput
+      [type]="type()"
+      [autocomplete]="autocomplete()"
+      [placeholder]="placeholder()"
+      [formControl]="control()"
+    />
+
+    <mat-error *ngIf="control().touched && control().hasError('required')">Campo obbligatorio</mat-error>
+    <mat-error *ngIf="control().touched && control().hasError('email')">Email non valida</mat-error>
+    <mat-error *ngIf="control().touched && control().hasError('minlength')">
+      Minimo {{ control().errors?.['minlength']?.requiredLength }} caratteri
+    </mat-error>
+  </mat-form-field>

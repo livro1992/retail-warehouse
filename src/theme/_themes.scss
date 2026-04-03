@@ -1,0 +1,38 @@
+@use '@angular/material' as mat;
+
+@use './colors' as colors;
+
+$light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: colors.$brand-primary,
+      tertiary: colors.$brand-tertiary,
+    ),
+    typography: (
+      brand-family: 'Inter',
+      plain-family: 'Inter'
+    ),
+    density: (
+      scale: 0
+    )
+  )
+);
+
+$dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: colors.$brand-primary,
+      tertiary: colors.$brand-tertiary,
+    ),
+    typography: (
+      brand-family: 'Inter',
+      plain-family: 'Inter'
+    ),
+    density: (
+      scale: 0
+    )
+  )
+);
+

@@ -1,0 +1,83 @@
+/* Stili globali del componente */
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Forza l'altezza a tutto schermo */
+  width: 100vw;
+  color: inherit;
+}
+
+.header {
+  z-index: 2; /* Resta sopra la sidebar */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: var(--app-bg-component);
+}
+
+.main-container {
+  flex: 1; /* Prende tutto lo spazio sotto la toolbar */
+  border: none;
+  background: var(--app-bg-component);
+}
+
+.main-sidebar {
+  width: 240px; /* Larghezza fissa per schermi grandi */
+  padding: 16px 0px;
+  background: var(--app-bg-component);
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: stretch;
+  background: var(--app-bg-component);
+  color: inherit;
+
+  // Stesso foreground dell'app (`styles.scss` → `--app-fg`); mat-button non eredita dal solo `html`.
+  .mat-mdc-button {
+    color: var(--app-fg);
+    --mat-button-text-label-text-color: var(--app-fg);
+    --mat-button-text-state-layer-color: var(--app-fg);
+  }
+
+  .header-menu {
+    flex-grow: 1;
+  }
+}
+
+.main-content {
+  padding: 24px;
+  background: var(--app-bg);
+  color: inherit;
+  /* Assicura che il contenuto respiri senza essere schiacciato */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-menu button {
+  width: 100%;                /* Occupa tutta la larghezza del menu */
+  border-radius: 0;           /* Opzionale: toglie l'arrotondamento per un look più "tab" */
+  height: 54px;               /* Un po' più alto per facilitare il tocco/click */
+  
+  /* Allineamento del contenuto */
+  display: flex;
+  justify-content: flex-start; 
+}
+
+/* IMPORTANTE: Angular Material usa uno span interno (.mdc-button__label) 
+   che ha un display inline-block. Dobbiamo resettarlo.
+*/
+.sidebar-menu button ::ng-deep .mdc-button__label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Spinge tutto a sinistra */
+  text-align: left;
+}
+
+/* Spaziatura tra icona e testo */
+.sidebar-menu mat-icon {
+  color: var(--app-fg);
+  margin-right: 16px;
+  margin-left: 8px; /* Un po' di margine dal bordo sinistro della sidebar */
+}

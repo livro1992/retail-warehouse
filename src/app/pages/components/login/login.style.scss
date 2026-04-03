@@ -1,0 +1,30 @@
+:host {
+    .page {
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+    }
+
+    app-ui-card {
+        max-width: 420px;
+        display: block;
+    }
+
+    .form {
+        display: grid;
+        gap: 16px;
+        padding-top: 8px;
+
+        button[mat-flat-button],
+        button[mat-stroked-button] {
+            width: 100%;
+        }
+    }
+
+    .spinner {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

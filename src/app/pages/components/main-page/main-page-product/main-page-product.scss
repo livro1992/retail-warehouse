@@ -1,0 +1,111 @@
+.product-page {
+  color: inherit;
+  //max-width: 960px;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__heading {
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    opacity: 0.85;
+  }
+
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  &__filter {
+    min-width: 180px;
+
+    &--grow {
+      flex: 1 1 240px;
+      min-width: 200px;
+    }
+  }
+
+  &__table-wrap {
+    background: var(--app-bg-component);
+    border: 1px solid color-mix(in srgb, var(--app-fg) 12%, transparent);
+    border-radius: 12px;
+    overflow: auto;
+  }
+
+  &__table {
+    width: 100%;
+    background: transparent;
+  }
+
+  &__col-check {
+    width: 52px;
+    padding-inline: 8px !important;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  &__cell-id {
+    font-size: 0.8125rem;
+    font-family: ui-monospace, monospace;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__name {
+    display: block;
+    font-weight: 500;
+  }
+
+  &__desc {
+    margin-top: 4px;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    opacity: 0.75;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__col-num {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__col-actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 24px 16px;
+    text-align: center;
+    font-size: 0.9375rem;
+    opacity: 0.85;
+  }
+}

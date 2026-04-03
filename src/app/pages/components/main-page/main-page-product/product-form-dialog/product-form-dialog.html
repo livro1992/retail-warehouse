@@ -1,0 +1,50 @@
+<div class="product-form-dialog">
+  <h2 class="product-form-dialog__title">
+    {{ isEdit ? 'Modifica prodotto' : 'Nuovo prodotto' }}
+  </h2>
+
+  <div class="product-form-dialog__body" [formGroup]="form">
+    <mat-form-field appearance="outline" class="product-form-dialog__field">
+      <mat-label>ID prodotto</mat-label>
+      <input matInput formControlName="productId" autocomplete="off" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="product-form-dialog__field">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" autocomplete="off" />
+      @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+        <mat-error>Obbligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="product-form-dialog__field">
+      <mat-label>Descrizione</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+      @if (form.controls.description.touched && form.controls.description.hasError('required')) {
+        <mat-error>Obbligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="product-form-dialog__field">
+      <mat-label>Prezzo base (€)</mat-label>
+      <input matInput type="number" formControlName="basePrice" min="0" step="0.01" />
+      @if (form.controls.basePrice.touched && form.controls.basePrice.hasError('required')) {
+        <mat-error>Obbligatorio</mat-error>
+      }
+      @if (form.controls.basePrice.touched && form.controls.basePrice.hasError('min')) {
+        <mat-error>Non può essere negativo</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="product-form-dialog__field">
+      <mat-label>Categoria</mat-label>
+      <input matInput formControlName="category" autocomplete="off" />
+      <mat-hint>Opcionale</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div class="product-form-dialog__actions">
+    <button mat-button type="button" (click)="cancel()">Annulla</button>
+    <button mat-flat-button color="primary" type="button" (click)="save()">Salva</button>
+  </div>
+</div>
