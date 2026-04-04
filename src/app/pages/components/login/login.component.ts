@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgIf } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -14,6 +15,7 @@ import {
   UiTextFieldComponent,
 } from '../../../shared/ui';
 import { TokenStorageService } from '../../../core/auth/token-storage.service';
+import { ThemeService } from '../../../core/theme/theme.service';
 import { LoginService } from '../../services/login_service';
 
 @Component({
@@ -22,6 +24,7 @@ import { LoginService } from '../../services/login_service';
     NgIf,
     ReactiveFormsModule,
     MatButtonModule,
+    MatIconModule,
     MatDividerModule,
     MatProgressSpinnerModule,
     UiCardComponent,
@@ -33,6 +36,8 @@ import { LoginService } from '../../services/login_service';
   standalone: true,
 })
 export class LoginComponent {
+  protected readonly theme = inject(ThemeService);
+
   email = new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] });
   password = new FormControl('', {
     nonNullable: true,

@@ -1,4 +1,13 @@
 <div class="page">
+    <button
+      mat-icon-button
+      type="button"
+      class="page__theme"
+      [attr.aria-label]="theme.isLight() ? 'Passa al tema scuro' : 'Passa al tema chiaro'"
+      (click)="theme.toggle()"
+    >
+      <mat-icon>{{ theme.isLight() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+    </button>
     <app-ui-card 
         [title]="'Accedi'" 
         [subtitle]="'Retail Warehouse'" 

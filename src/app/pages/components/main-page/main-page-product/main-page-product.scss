@@ -58,6 +58,14 @@
     background: transparent;
   }
 
+  &__row {
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, var(--app-fg) 5%, transparent);
+    }
+  }
+
   &__col-check {
     width: 52px;
     padding-inline: 8px !important;

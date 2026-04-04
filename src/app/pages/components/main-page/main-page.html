@@ -3,6 +3,15 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span>Retail Warehouse</span>
+  <span class="header__spacer"></span>
+  <button
+    mat-icon-button
+    type="button"
+    [attr.aria-label]="theme.isLight() ? 'Passa al tema scuro' : 'Passa al tema chiaro'"
+    (click)="theme.toggle()"
+  >
+    <mat-icon>{{ theme.isLight() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+  </button>
 </mat-toolbar>
   
 <mat-drawer-container class="main-container" autosize>
@@ -10,7 +19,7 @@
     <div class="sidebar-menu">
       <div class="header-menu">
           <button mat-button routerLink="/backoffice/dashboard">
-              <mat-icon>shopping_cart</mat-icon> Cassa
+              <mat-icon>shopping_cart</mat-icon> Dashoard
           </button>
           
           <button mat-button routerLink="/backoffice/warehouse">

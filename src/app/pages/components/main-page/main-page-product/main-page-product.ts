@@ -9,10 +9,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 
 import {
+  ProductDetailDialogComponent,
+  type ProductDetailDialogData,
+  type ProductDetailDialogResult,
+} from './product-detail-dialog/product-detail-dialog.component';
+import {
   ProductFormDialogComponent,
   type ProductFormDialogData,
 } from './product-form-dialog/product-form-dialog.component';
 import type { Product } from '../../../../data/product.types';
+import { UiAlertService } from '../../../../shared/ui';
 
 @Component({
   selector: 'app-main-page-product',
@@ -31,6 +37,7 @@ import type { Product } from '../../../../data/product.types';
 })
 export class MainPageProduct {
   private readonly dialog = inject(MatDialog);
+  private readonly uiAlert = inject(UiAlertService);
 
   /** Bozza: dati locali; sostituire con chiamate HTTP (payload come CreateProductDto). */
   readonly products = signal<Product[]>([
@@ -136,6 +143,30 @@ export class MainPageProduct {
     });
   }
 
+  openDetail(product: Product): void {
+    this.dialog
+      .open<
+        ProductDetailDialogComponent,
+        ProductDetailDialogData,
+        ProductDetailDialogResult
+      >(ProductDetailDialogComponent, {
+        data: { product },
+        width: 'min(480px, calc(100vw - 32px))',
+        panelClass: 'product-detail-dialog-panel',
+        autoFocus: 'first-tabbable',
+      })
+      .afterClosed()
+      .subscribe((action) => {
+        if (action !== 'edit') {
+          return;
+        }
+        const current = this.products().find((p) => p.productId === product.productId);
+        if (current) {
+          this.openEdit(current);
+        }
+      });
+  }
+
   openCreate(): void {
     this.dialog
       .open<ProductFormDialogComponent, ProductFormDialogData, Product | undefined>(
@@ -176,14 +207,22 @@ export class MainPageProduct {
   }
 
   deleteProduct(product: Product): void {
-    if (!confirm(`Eliminare "${product.name}" (${product.productId})?`)) {
-      return;
-    }
-    this.products.update((list) => list.filter((x) => x.productId !== product.productId));
-    this.selectedIds.update((s) => {
-      const next = new Set(s);
-      next.delete(product.productId);
-      return next;
-    });
+    this.uiAlert
+      .confirm(
+        `Eliminare "${product.name}" (${product.productId})?`,
+        'Elimina prodotto',
+        { confirmLabel: 'Elimina', cancelLabel: 'Annulla' },
+      )
+      .subscribe((ok) => {
+        if (!ok) {
+          return;
+        }
+        this.products.update((list) => list.filter((x) => x.productId !== product.productId));
+        this.selectedIds.update((s) => {
+          const next = new Set(s);
+          next.delete(product.productId);
+          return next;
+        });
+      });
   }
 }

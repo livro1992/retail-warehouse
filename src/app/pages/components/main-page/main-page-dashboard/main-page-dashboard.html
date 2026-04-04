@@ -1,1 +1,94 @@
-<p>main-page-dashboard works!</p>
+<div class="dashboard">
+  <h1 class="dashboard__page-title">Dashboard</h1>
+  <p class="dashboard__intro">Panoramica (dati di esempio).</p>
+
+  <div class="dashboard__grid">
+    <!-- 1: line chart -->
+    <mat-card class="dashboard__widget" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Andamento</mat-card-title>
+        <mat-card-subtitle>Serie lineare (mock)</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="dashboard__chart-line" role="img" aria-label="Grafico lineare andamento">
+          <svg class="dashboard__svg" viewBox="0 0 200 96" preserveAspectRatio="none">
+            <polyline
+              class="dashboard__line-stroke"
+              fill="none"
+              [attr.points]="linePoints"
+            />
+          </svg>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- 2: bar chart -->
+    <mat-card class="dashboard__widget" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Volume per canale</mat-card-title>
+        <mat-card-subtitle>Grafico a barre (mock)</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="dashboard__bar-chart" role="img" aria-label="Grafico a barre">
+          @for (row of barRows; track row.label) {
+            <div class="dashboard__bar-row">
+              <span class="dashboard__bar-label">{{ row.label }}</span>
+              <div class="dashboard__bar-track">
+                <div
+                  class="dashboard__bar-fill"
+                  [style.width.%]="(row.value / barMax) * 100"
+                ></div>
+              </div>
+              <span class="dashboard__bar-value">{{ row.value }}</span>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- 3: top products -->
+    <mat-card class="dashboard__widget" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Più venduti</mat-card-title>
+        <mat-card-subtitle>Top 4 prodotti (mock)</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <ol class="dashboard__ranked-list">
+          @for (p of topSold; track p.name; let i = $index) {
+            <li class="dashboard__ranked-item">
+              <span class="dashboard__rank">{{ i + 1 }}</span>
+              <span class="dashboard__rank-name">{{ p.name }}</span>
+              <span class="dashboard__rank-val">{{ p.sold | number }} pz</span>
+            </li>
+          }
+        </ol>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- 4: low stock -->
+    <mat-card class="dashboard__widget dashboard__widget--alert" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title class="dashboard__title-with-icon">
+          <mat-icon class="dashboard__alert-icon" aria-hidden="true">warning</mat-icon>
+          Sottoscorta
+        </mat-card-title>
+        <mat-card-subtitle>Articoli sotto la soglia (mock)</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <ul class="dashboard__alert-list">
+          @for (a of lowStock; track a.name) {
+            <li class="dashboard__alert-item">
+              <div class="dashboard__alert-main">
+                <span class="dashboard__alert-name">{{ a.name }}</span>
+                <span class="dashboard__alert-qty">
+                  Giacenza <strong>{{ a.qty }}</strong>
+                  <span class="dashboard__alert-min">/ min {{ a.minLevel }}</span>
+                </span>
+              </div>
+            </li>
+          }
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

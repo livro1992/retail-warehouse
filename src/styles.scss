@@ -81,6 +81,16 @@ html.theme-light {
   box-shadow: 0 8px 32px color-mix(in srgb, #000 45%, transparent);
 }
 
+// Dialog dettaglio prodotto (sola lettura)
+.product-detail-dialog-panel .mat-mdc-dialog-surface {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--app-bg-component);
+  border: 1px solid color-mix(in srgb, var(--app-fg) 14%, transparent);
+  box-shadow: 0 8px 32px color-mix(in srgb, #000 45%, transparent);
+}
+
 // Container dialog Material: sfondo opaco (no trasparenza sul backdrop)
 .ui-alert-dialog-panel .mat-mdc-dialog-surface {
   padding: 0;
