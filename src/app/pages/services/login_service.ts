@@ -16,6 +16,7 @@ export class LoginService extends HttpManager {
 
     login(email: string, password: string): Observable<LoginResponse> {
         const url = `${Net.apiAddress}${Net.login}`;
+        
         return this.post<LoginResponse>(
             url, { 
                 email, 
