@@ -9,6 +9,12 @@ export interface UiAlertDialogData {
   type: UiAlertKind;
   message: string;
   title?: string;
+  /** Se true: pulsanti Annulla / Conferma e chiusura con `true` | `false`. */
+  confirm?: boolean;
+  /** Etichetta pulsante conferma (default: Conferma). */
+  confirmLabel?: string;
+  /** Etichetta pulsante annulla (default: Annulla). */
+  cancelLabel?: string;
 }
 
 @Component({
@@ -22,18 +28,32 @@ export class UiAlertDialogComponent {
   readonly data = inject<UiAlertDialogData>(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(MatDialogRef<UiAlertDialogComponent>);
 
-  readonly iconName = computed(() =>
-    this.data.type === 'error' ? 'error' : 'warning_amber',
-  );
+  readonly iconName = computed(() => {
+    if (this.data.confirm) {
+      return 'help_outline';
+    }
+    return this.data.type === 'error' ? 'error' : 'warning_amber';
+  });
 
   readonly titleText = computed(() => {
     if (this.data.title?.trim()) {
       return this.data.title.trim();
     }
+    if (this.data.confirm) {
+      return 'Conferma';
+    }
     return this.data.type === 'error' ? 'Errore' : 'Attenzione';
   });
 
-  close(): void {
-    this.dialogRef.close();
+  readonly confirmLabelText = computed(
+    () => this.data.confirmLabel?.trim() || 'Conferma',
+  );
+
+  readonly cancelLabelText = computed(
+    () => this.data.cancelLabel?.trim() || 'Annulla',
+  );
+
+  close(result?: boolean): void {
+    this.dialogRef.close(this.data.confirm ? result === true : undefined);
   }
 }

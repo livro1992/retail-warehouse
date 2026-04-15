@@ -1,6 +1,5 @@
-.product-page {
+.order-prep-page {
   color: inherit;
-  //max-width: 960px;
 
   &__header {
     display: flex;
@@ -66,36 +65,35 @@
     }
   }
 
-  &__col-check {
-    width: 52px;
-    padding-inline: 8px !important;
-    text-align: center;
-    vertical-align: middle;
-  }
-
   &__cell-id {
     font-size: 0.8125rem;
     font-family: ui-monospace, monospace;
-    max-width: 120px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  &__name {
-    display: block;
-    font-weight: 500;
+  &__mono {
+    font-size: 0.8125rem;
+    font-family: ui-monospace, monospace;
   }
 
-  &__desc {
-    margin-top: 4px;
+  &__chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
     font-size: 0.8125rem;
-    line-height: 1.35;
-    opacity: 0.75;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-weight: 500;
+
+    &--status {
+      background: color-mix(in srgb, var(--mat-sys-primary) 22%, transparent);
+      color: var(--mat-sys-primary);
+    }
+
+    &--pay {
+      background: color-mix(in srgb, var(--app-fg) 10%, transparent);
+    }
   }
 
   &__col-num {

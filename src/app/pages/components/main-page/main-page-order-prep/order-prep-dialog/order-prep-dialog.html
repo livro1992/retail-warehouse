@@ -1,0 +1,87 @@
+<div class="order-prep-dialog">
+  <h2 class="order-prep-dialog__title">Preparazione ordine</h2>
+  <p class="order-prep-dialog__id">{{ draft.orderId }}</p>
+
+  <div class="order-prep-dialog__grid">
+    <div class="order-prep-dialog__field">
+      <span class="order-prep-dialog__label">Creato</span>
+      <span>{{ draft.createdAt | date: 'short' }}</span>
+    </div>
+    <div class="order-prep-dialog__field">
+      <span class="order-prep-dialog__label">Aggiornato</span>
+      <span>{{ draft.updatedAt | date: 'short' }}</span>
+    </div>
+    <div class="order-prep-dialog__field">
+      <span class="order-prep-dialog__label">Mercato</span>
+      <span class="order-prep-dialog__mono">{{ draft.marketId }}</span>
+    </div>
+    <div class="order-prep-dialog__field">
+      <span class="order-prep-dialog__label">Tipo</span>
+      <span>{{ typeLabels[draft.orderType] }}</span>
+    </div>
+    <div class="order-prep-dialog__field">
+      <span class="order-prep-dialog__label">Evasione</span>
+      <span>{{ fulfillmentLabels[draft.fulfillmentMode] }}</span>
+    </div>
+    <div class="order-prep-dialog__field order-prep-dialog__field--amount">
+      <span class="order-prep-dialog__label">Totale</span>
+      <span>{{ draft.totalAmount | number: '1.2-2' }} €</span>
+    </div>
+  </div>
+
+  <div class="order-prep-dialog__controls">
+    <mat-form-field appearance="outline" class="order-prep-dialog__select">
+      <mat-label>Stato ordine</mat-label>
+      <mat-select [(ngModel)]="draft.orderStatus" name="orderStatus">
+        @for (s of orderStatuses; track s) {
+          <mat-option [value]="s">{{ statusLabels[s] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="order-prep-dialog__select">
+      <mat-label>Pagamento</mat-label>
+      <mat-select [(ngModel)]="draft.paymentStatus" name="paymentStatus">
+        @for (p of [OrderPaymentStatus.pending, OrderPaymentStatus.paid, OrderPaymentStatus.failed, OrderPaymentStatus.refunded]; track p) {
+          <mat-option [value]="p">{{ paymentLabels[p] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <h3 class="order-prep-dialog__subtitle">Righe ordine</h3>
+  <div class="order-prep-dialog__table-wrap">
+    <table mat-table [dataSource]="draft.orderItems" class="order-prep-dialog__table">
+      <ng-container matColumnDef="productName">
+        <th mat-header-cell *matHeaderCellDef>Prodotto</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="order-prep-dialog__name">{{ row.productName }}</span>
+          <span class="order-prep-dialog__pid">{{ row.productId }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef class="order-prep-dialog__num">Qtà</th>
+        <td mat-cell *matCellDef="let row" class="order-prep-dialog__num">{{ row.quantity }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef class="order-prep-dialog__num">Prezzo</th>
+        <td mat-cell *matCellDef="let row" class="order-prep-dialog__num">
+          {{ row.price | number: '1.2-2' }} €
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="lineTotal">
+        <th mat-header-cell *matHeaderCellDef class="order-prep-dialog__num">Riga</th>
+        <td mat-cell *matCellDef="let row" class="order-prep-dialog__num">
+          {{ lineTotal(row.quantity, row.price) | number: '1.2-2' }} €
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="itemColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: itemColumns"></tr>
+    </table>
+  </div>
+
+  <div class="order-prep-dialog__actions">
+    <button mat-stroked-button type="button" (click)="cancel()">Annulla</button>
+    <button mat-flat-button color="primary" type="button" (click)="save()">Salva stato</button>
+  </div>
+</div>

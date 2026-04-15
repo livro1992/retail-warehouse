@@ -1,0 +1,25 @@
+<div class="product-detail-dialog">
+  <h2 class="product-detail-dialog__title">Dettaglio prodotto</h2>
+
+  <dl class="product-detail-dialog__fields">
+    <dt>ID prodotto</dt>
+    <dd>{{ data.product.productId }}</dd>
+
+    <dt>Nome</dt>
+    <dd>{{ data.product.name }}</dd>
+
+    <dt>Descrizione</dt>
+    <dd class="product-detail-dialog__desc">{{ data.product.description }}</dd>
+
+    <dt>Prezzo base</dt>
+    <dd>{{ data.product.basePrice | number: '1.2-2' }} €</dd>
+
+    <dt>Categoria</dt>
+    <dd>{{ data.product.category ?? '—' }}</dd>
+  </dl>
+
+  <div class="product-detail-dialog__actions">
+    <button mat-button type="button" (click)="close()">Chiudi</button>
+    <button mat-flat-button color="primary" type="button" (click)="edit()">Modifica</button>
+  </div>
+</div>
