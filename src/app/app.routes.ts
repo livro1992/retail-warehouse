@@ -44,6 +44,13 @@ export const routes: Routes = [
             './pages/components/main-page/main-page-product/main-page-product'
           ).then((m) => m.MainPageProduct),
       },
+      {
+        path: 'orders/prep',
+        loadComponent: () =>
+          import(
+            './pages/components/main-page/main-page-order-prep/main-page-order-prep'
+          ).then((m) => m.MainPageOrderPrep),
+      },
     ],
   },
 ];

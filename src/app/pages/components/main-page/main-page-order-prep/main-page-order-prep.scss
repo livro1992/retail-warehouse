@@ -1,0 +1,117 @@
+.order-prep-page {
+  color: inherit;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__heading {
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    opacity: 0.85;
+  }
+
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  &__filter {
+    min-width: 180px;
+
+    &--grow {
+      flex: 1 1 240px;
+      min-width: 200px;
+    }
+  }
+
+  &__table-wrap {
+    background: var(--app-bg-component);
+    border: 1px solid color-mix(in srgb, var(--app-fg) 12%, transparent);
+    border-radius: 12px;
+    overflow: auto;
+  }
+
+  &__table {
+    width: 100%;
+    background: transparent;
+  }
+
+  &__row {
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, var(--app-fg) 5%, transparent);
+    }
+  }
+
+  &__cell-id {
+    font-size: 0.8125rem;
+    font-family: ui-monospace, monospace;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__mono {
+    font-size: 0.8125rem;
+    font-family: ui-monospace, monospace;
+  }
+
+  &__chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+
+    &--status {
+      background: color-mix(in srgb, var(--mat-sys-primary) 22%, transparent);
+      color: var(--mat-sys-primary);
+    }
+
+    &--pay {
+      background: color-mix(in srgb, var(--app-fg) 10%, transparent);
+    }
+  }
+
+  &__col-num {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__col-actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 24px 16px;
+    text-align: center;
+    font-size: 0.9375rem;
+    opacity: 0.85;
+  }
+}

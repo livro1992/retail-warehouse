@@ -1,0 +1,121 @@
+<section class="order-prep-page">
+  <header class="order-prep-page__header">
+    <div class="order-prep-page__heading">
+      <h1 class="order-prep-page__title">Preparazione ordini</h1>
+      <p class="order-prep-page__subtitle">
+        Operatore: consulta le righe, aggiorna stato ordine e pagamento (dati bozza allineati al modello backend).
+      </p>
+    </div>
+  </header>
+
+  <div class="order-prep-page__filters">
+    <mat-form-field appearance="outline" class="order-prep-page__filter order-prep-page__filter--grow">
+      <mat-label>Cerca</mat-label>
+      <input
+        matInput
+        type="search"
+        [value]="filterText()"
+        (input)="filterText.set($any($event.target).value)"
+        placeholder="ID ordine, mercato, prodotto…"
+        autocomplete="off"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="order-prep-page__filter">
+      <mat-label>Stato ordine</mat-label>
+      <mat-select
+        [value]="filterStatus()"
+        (valueChange)="filterStatus.set($event)"
+        placeholder="Tutti"
+      >
+        <mat-option value="">Tutti</mat-option>
+        @for (s of orderStatuses; track s) {
+          <mat-option [value]="s">{{ statusLabels[s] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="order-prep-page__table-wrap">
+    <table mat-table [dataSource]="filteredOrders()" class="order-prep-page__table">
+      <ng-container matColumnDef="orderId">
+        <th mat-header-cell *matHeaderCellDef>Ordine</th>
+        <td mat-cell *matCellDef="let row" class="order-prep-page__cell-id">{{ row.orderId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Data</th>
+        <td mat-cell *matCellDef="let row">{{ row.createdAt | date: 'short' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="marketId">
+        <th mat-header-cell *matHeaderCellDef>Mercato</th>
+        <td mat-cell *matCellDef="let row" class="order-prep-page__mono">{{ row.marketId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="orderType">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td mat-cell *matCellDef="let row">{{ orderTypeLabel(row) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="orderStatus">
+        <th mat-header-cell *matHeaderCellDef>Stato</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="order-prep-page__chip order-prep-page__chip--status">{{ orderStatusLabel(row) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paymentStatus">
+        <th mat-header-cell *matHeaderCellDef>Pagamento</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="order-prep-page__chip order-prep-page__chip--pay">{{ paymentLabel(row) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fulfillmentMode">
+        <th mat-header-cell *matHeaderCellDef>Evasione</th>
+        <td mat-cell *matCellDef="let row">{{ fulfillmentLabel(row) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalAmount">
+        <th mat-header-cell *matHeaderCellDef class="order-prep-page__col-num">Totale</th>
+        <td mat-cell *matCellDef="let row" class="order-prep-page__col-num">
+          {{ row.totalAmount | number: '1.2-2' }} €
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="order-prep-page__col-actions"></th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          class="order-prep-page__col-actions"
+          (click)="$event.stopPropagation()"
+        >
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Apri preparazione"
+            (click)="openPrep(row)"
+          >
+            <mat-icon>inventory_2</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="order-prep-page__row"
+        (click)="openPrep(row)"
+      ></tr>
+    </table>
+
+    @if (orders().length === 0) {
+      <p class="order-prep-page__empty">Nessun ordine.</p>
+    } @else if (filteredOrders().length === 0) {
+      <p class="order-prep-page__empty">Nessun risultato con i filtri attuali.</p>
+    }
+  </div>
+</section>
