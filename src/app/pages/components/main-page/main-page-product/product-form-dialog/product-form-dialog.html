@@ -3,7 +3,7 @@
     {{ isEdit ? 'Modifica prodotto' : 'Nuovo prodotto' }}
   </h2>
 
-  <div class="product-form-dialog__body" [formGroup]="form">
+  <div class="product-form-dialog__body" [formGroup]="form" [attr.aria-busy]="saving()">
     <mat-form-field appearance="outline" class="product-form-dialog__field">
       <mat-label>ID prodotto</mat-label>
       <input matInput formControlName="productId" autocomplete="off" />
@@ -44,7 +44,9 @@
   </div>
 
   <div class="product-form-dialog__actions">
-    <button mat-button type="button" (click)="cancel()">Annulla</button>
-    <button mat-flat-button color="primary" type="button" (click)="save()">Salva</button>
+    <button mat-button type="button" [disabled]="saving()" (click)="cancel()">Annulla</button>
+    <button mat-flat-button color="primary" type="button" [disabled]="saving()" (click)="save()">
+      {{ saving() ? 'Salvataggio…' : 'Salva' }}
+    </button>
   </div>
 </div>

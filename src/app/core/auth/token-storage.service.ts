@@ -36,12 +36,17 @@ export class TokenStorageService {
   /** Payload JWT decodificato (nessuna verifica crittografica). */
   getPayload(): Record<string, unknown> | null {
     const t = this.getToken();
+
     if (!t) return null;
+    
     try {
       const parts = t.split('.');
+
       if (parts.length !== 3) return null;
+
       let base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
       const pad = base64.length % 4;
+      
       if (pad) {
         base64 += '='.repeat(4 - pad);
       }

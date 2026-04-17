@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -8,8 +8,11 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { finalize } from 'rxjs/operators';
 
-import type { Product } from '../../../../../data/product.types';
+import type { CreateProductDto, Product, UpdateProductDto } from '../../../../../data/product.types';
+import { ProductService } from '../../../../services/product.service';
+import { UiAlertService } from '../../../../../shared/ui';
 
 export interface ProductFormDialogData {
   product: Product | null;
@@ -30,6 +33,9 @@ export interface ProductFormDialogData {
 })
 export class ProductFormDialogComponent implements OnInit {
   readonly isEdit: boolean;
+  private readonly productService = inject(ProductService);
+  private readonly uiAlert = inject(UiAlertService);
+  readonly saving = signal(false);
 
   form = new FormGroup({
     productId: new FormControl('', { nonNullable: true }),
@@ -50,6 +56,7 @@ export class ProductFormDialogComponent implements OnInit {
 
   ngOnInit(): void {
     const p = this.data.product;
+
     if (p) {
       this.form.patchValue({
         productId: p.productId,
@@ -77,22 +84,52 @@ export class ProductFormDialogComponent implements OnInit {
     const raw = this.form.getRawValue();
     const basePrice = Number(raw.basePrice);
     const categoryTrim = raw.category?.trim();
-    const product: Product = this.data.product
-      ? {
-          ...this.data.product,
-          productId: this.data.product.productId,
-          name: raw.name,
-          description: raw.description,
-          basePrice,
-          ...(categoryTrim ? { category: categoryTrim } : { category: undefined }),
-        }
-      : {
-          productId: crypto.randomUUID(),
-          name: raw.name,
-          description: raw.description,
-          basePrice,
-          ...(categoryTrim ? { category: categoryTrim } : {}),
-        };
-    this.ref.close(product);
+
+    if (this.isEdit) {
+      const p = this.data.product!;
+      const dto: UpdateProductDto = {
+        ...p,
+        name: raw.name,
+        description: raw.description,
+        basePrice,
+        ...(categoryTrim ? { category: categoryTrim } : { category: undefined }),
+      }
+      this.saving.set(true);
+
+      this.productService
+        .update(p.productId, dto)
+        .pipe(finalize(() => this.saving.set(false)))
+        .subscribe({
+          next: (updated) => this.ref.close(updated),
+          error: () => {
+            this.uiAlert
+              .error('Creazione prodotto non riuscita. Controlla i dati o riprova.', 'Errore')
+              .subscribe();
+          },
+        });
+      
+      return;
+    }
+
+    const dto: CreateProductDto = {
+      productId: crypto.randomUUID(),
+      name: raw.name,
+      description: raw.description,
+      basePrice,
+      ...(categoryTrim ? { category: categoryTrim } : {}),
+    };
+
+    this.saving.set(true);
+    this.productService
+      .create(dto)
+      .pipe(finalize(() => this.saving.set(false)))
+      .subscribe({
+        next: (created) => this.ref.close(created),
+        error: () => {
+          this.uiAlert
+            .error('Creazione prodotto non riuscita. Controlla i dati o riprova.', 'Errore')
+            .subscribe();
+        },
+      });
   }
 }

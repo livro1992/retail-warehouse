@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ import {
   type ProductFormDialogData,
 } from './product-form-dialog/product-form-dialog.component';
 import type { Product } from '../../../../data/product.types';
+import { ProductService } from '../../../services/product.service';
 import { UiAlertService } from '../../../../shared/ui';
 
 @Component({
@@ -35,26 +36,26 @@ import { UiAlertService } from '../../../../shared/ui';
   templateUrl: './main-page-product.html',
   styleUrl: './main-page-product.scss',
 })
-export class MainPageProduct {
+export class MainPageProduct implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly uiAlert = inject(UiAlertService);
+  private readonly productService = inject(ProductService);
 
-  /** Bozza: dati locali; sostituire con chiamate HTTP (payload come CreateProductDto). */
-  readonly products = signal<Product[]>([
-    {
-      productId: 'demo-1',
-      name: 'Caffè in grani 1 kg',
-      description: 'Miscela arabica, tostatura media.',
-      basePrice: 12.5,
-      category: 'Bevande',
-    },
-    {
-      productId: 'demo-2',
-      name: 'Zucchero 500 g',
-      description: 'Zucchero semolato.',
-      basePrice: 1.2,
-    },
-  ]);
+  readonly products = signal<Product[]>([]);
+
+  ngOnInit(): void {
+    this.productService.list().subscribe({
+      next: (rows) => this.products.set(rows),
+      error: () => {
+        this.uiAlert
+          .error(
+            'Impossibile caricare l’elenco prodotti. Controlla che il server sia attivo e che il proxy punti alla porta corretta.',
+            'Errore di rete',
+          )
+          .subscribe();
+      },
+    });
+  }
 
   /** Testo libero su id, nome, descrizione, categoria, prezzo. */
   readonly filterText = signal('');

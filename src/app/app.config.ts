@@ -2,7 +2,6 @@ import {
   APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
-  provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -23,7 +22,6 @@ export const appConfig: ApplicationConfig = {
       deps: [ThemeService],
       multi: true,
     },
-    provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withInterceptors([authInterceptor])),
     importProvidersFrom(MatDialogModule),

@@ -4,15 +4,15 @@ import { Observable } from "rxjs";
 export class HttpManager {
   constructor(private http: HttpClient) {}
 
-  get(url: string) {
-    return this.http.get(url);
+  get<T>(url: string): Observable<T> {
+    return this.http.get<T>(url);
   }
 
   post<T>(url: string, data: unknown): Observable<T> {
     return this.http.post<T>(url, data);
   }
 
-  put(url: string, data: any) {
-    return this.http.put(url, data);
+  put<T>(url: string, data: any): Observable<T> {
+    return this.http.put<T>(url, data);
   }
 }

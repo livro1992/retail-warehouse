@@ -1,6 +1,5 @@
 /**
- * Modello prodotto allineato al DTO backend `CreateProductDto`
- * (`productId`, `name`, `description`, `basePrice`, `category?`).
+ * Modello prodotto restituito dal backend (include `productId`).
  */
 export interface Product {
   productId: string;
@@ -9,3 +8,7 @@ export interface Product {
   basePrice: number;
   category?: string;
 }
+
+/** Corpo POST creazione: niente `productId` (lo assegna il server). */
+export type CreateProductDto = Product;///Omit<Product, 'productId'>;
+export type UpdateProductDto = Omit<Product, 'productId'>;
