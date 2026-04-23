@@ -22,6 +22,12 @@
     --ui-alert-icon: var(--app-alert-warning-accent);
   }
 
+  &--success {
+    --ui-alert-surface: var(--app-alert-success-surface);
+    --ui-alert-accent: var(--app-alert-success-accent);
+    --ui-alert-icon: var(--app-alert-success-accent);
+  }
+
   &__main {
     display: flex;
     align-items: flex-start;

@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { TokenStorageService } from '../../../core/auth/token-storage.service';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../../core/auth/auth.service';
 import { ThemeService } from '../../../core/theme/theme.service';
 
 @Component({
@@ -22,8 +22,7 @@ export class MainPage {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private router: Router,
-    private tokenStorage: TokenStorageService,
+    private auth: AuthService,
   ) {
     this.breakpointObserver.observe([Breakpoints.Handset])
       .subscribe(result => {
@@ -32,7 +31,6 @@ export class MainPage {
   }
 
   logout(): void {
-    this.tokenStorage.clear();
-    void this.router.navigate(['/login']);
+    this.auth.logout();
   }
 }

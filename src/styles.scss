@@ -9,66 +9,83 @@
 html {
   @include mat.all-component-themes(themes.$dark-theme);
 
-  // Testo da palette app (`:root` / `html.theme-light`): cascata + token Material allineati a `--app-fg`.
-  color: var(--app-fg);
-  --mat-sys-on-surface: var(--app-fg);
-  --mat-sys-on-background: var(--app-fg);
-  --mat-toolbar-container-text-color: var(--app-fg);
-  --mat-button-text-label-text-color: var(--app-fg);
-  --mat-button-text-state-layer-color: var(--app-fg);
-  --mat-icon-button-icon-color: var(--app-fg);
+  // Dopo `@include` Material ci sono solo regole annidate: evita mixed-decls (Sass) raggruppando in `& {}`.
+  & {
+    // Testo da palette app (`:root` / `html.theme-light`): cascata + token Material allineati a `--app-fg`.
+    color: var(--app-fg);
+    --mat-sys-on-surface: var(--app-fg);
+    --mat-sys-on-background: var(--app-fg);
+    --mat-toolbar-container-text-color: var(--app-fg);
+    --mat-button-text-label-text-color: var(--app-fg);
+    --mat-button-text-state-layer-color: var(--app-fg);
+    --mat-icon-button-icon-color: var(--app-fg);
 
-  // mat-flat-button (filled): stile invertito — sfondo neutro, testo/ripple primary (non primary pieno + on-primary).
-  --mat-button-filled-container-color: var(--app-fg);
-  --mat-button-filled-label-text-color: var(--app-bg);
-  --mat-button-filled-state-layer-color: var(--app-bg);
-  // mat-stroked-button (outlined): bordo + testo primary (come prima).
-  --mat-button-outlined-label-text-color: var(--mat-sys-primary);
-  --mat-button-outlined-outline-color: var(--mat-sys-primary);
-  --mat-button-outlined-state-layer-color: var(--mat-sys-primary);
+    // mat-flat-button (filled): stile invertito — sfondo neutro, testo/ripple primary (non primary pieno + on-primary).
+    --mat-button-filled-container-color: var(--app-fg);
+    --mat-button-filled-label-text-color: var(--app-bg);
+    --mat-button-filled-state-layer-color: var(--app-bg);
+    // mat-stroked-button (outlined): bordo + testo primary (come prima).
+    --mat-button-outlined-label-text-color: var(--mat-sys-primary);
+    --mat-button-outlined-outline-color: var(--mat-sys-primary);
+    --mat-button-outlined-state-layer-color: var(--mat-sys-primary);
 
-  // Dialog popup errore / attenzione (shared `UiAlertDialog`)
-  --app-alert-error-surface: color-mix(in srgb, var(--mat-sys-error) 26%, var(--app-bg-component));
-  --app-alert-error-accent: var(--mat-sys-error);
-  --app-alert-warning-surface: color-mix(
-    in srgb,
-    #{colors.$alert-warning-accent} 28%,
-    var(--app-bg-component)
-  );
-  --app-alert-warning-accent: #{colors.$alert-warning-accent};
+    // Dialog popup errore / attenzione (shared `UiAlertDialog`)
+    --app-alert-error-surface: color-mix(in srgb, var(--mat-sys-error) 26%, var(--app-bg-component));
+    --app-alert-error-accent: var(--mat-sys-error);
+    --app-alert-warning-surface: color-mix(
+      in srgb,
+      #{colors.$alert-warning-accent} 28%,
+      var(--app-bg-component)
+    );
+    --app-alert-warning-accent: #{colors.$alert-warning-accent};
+    --app-alert-success-surface: color-mix(
+      in srgb,
+      #{colors.$alert-success-accent} 26%,
+      var(--app-bg-component)
+    );
+    --app-alert-success-accent: #{colors.$alert-success-accent};
+  }
 }
 
 html.theme-light {
   @include mat.all-component-themes(themes.$light-theme);
 
-  color: var(--app-fg);
-  --mat-sys-on-surface: var(--app-fg);
-  --mat-sys-on-background: var(--app-fg);
-  --mat-toolbar-container-text-color: var(--app-fg);
-  --mat-button-text-label-text-color: var(--app-fg);
-  --mat-button-text-state-layer-color: var(--app-fg);
-  --mat-icon-button-icon-color: var(--app-fg);
+  & {
+    color: var(--app-fg);
+    --mat-sys-on-surface: var(--app-fg);
+    --mat-sys-on-background: var(--app-fg);
+    --mat-toolbar-container-text-color: var(--app-fg);
+    --mat-button-text-label-text-color: var(--app-fg);
+    --mat-button-text-state-layer-color: var(--app-fg);
+    --mat-icon-button-icon-color: var(--app-fg);
 
-  --mat-button-filled-container-color: var(--app-filled-btn-bg);
-  --mat-button-filled-label-text-color: var(--app-filled-btn-fg);
-  --mat-button-filled-state-layer-color: var(--app-filled-btn-fg);
-  --mat-button-filled-ripple-color: color-mix(
-    in srgb,
-    var(--app-filled-btn-fg) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%),
-    transparent
-  );
-  --mat-button-outlined-label-text-color: var(--mat-sys-primary);
-  --mat-button-outlined-outline-color: var(--mat-sys-primary);
-  --mat-button-outlined-state-layer-color: var(--mat-sys-primary);
+    --mat-button-filled-container-color: var(--app-filled-btn-bg);
+    --mat-button-filled-label-text-color: var(--app-filled-btn-fg);
+    --mat-button-filled-state-layer-color: var(--app-filled-btn-fg);
+    --mat-button-filled-ripple-color: color-mix(
+      in srgb,
+      var(--app-filled-btn-fg) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%),
+      transparent
+    );
+    --mat-button-outlined-label-text-color: var(--mat-sys-primary);
+    --mat-button-outlined-outline-color: var(--mat-sys-primary);
+    --mat-button-outlined-state-layer-color: var(--mat-sys-primary);
 
-  --app-alert-error-surface: color-mix(in srgb, var(--mat-sys-error) 22%, var(--app-bg-component));
-  --app-alert-error-accent: var(--mat-sys-error);
-  --app-alert-warning-surface: color-mix(
-    in srgb,
-    #{colors.$alert-warning-accent} 24%,
-    var(--app-bg-component)
-  );
-  --app-alert-warning-accent: #{colors.$alert-warning-accent};
+    --app-alert-error-surface: color-mix(in srgb, var(--mat-sys-error) 22%, var(--app-bg-component));
+    --app-alert-error-accent: var(--mat-sys-error);
+    --app-alert-warning-surface: color-mix(
+      in srgb,
+      #{colors.$alert-warning-accent} 24%,
+      var(--app-bg-component)
+    );
+    --app-alert-warning-accent: #{colors.$alert-warning-accent};
+    --app-alert-success-surface: color-mix(
+      in srgb,
+      #{colors.$alert-success-accent} 22%,
+      var(--app-bg-component)
+    );
+    --app-alert-success-accent: #{colors.$alert-success-accent};
+  }
 }
 
 // Dialog form prodotto (anagrafica)

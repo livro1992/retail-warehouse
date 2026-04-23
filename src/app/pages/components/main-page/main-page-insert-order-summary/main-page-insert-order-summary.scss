@@ -1,0 +1,90 @@
+.insert-order-summary-page {
+  color: inherit;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__heading {
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    opacity: 0.85;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &__actions mat-icon {
+    margin-right: 4px;
+    vertical-align: middle;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--app-fg) 12%, transparent);
+    background: var(--app-bg-component);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+
+  &__table-wrap {
+    overflow: auto;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--app-fg) 12%, transparent);
+    background: var(--app-bg-component);
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 640px;
+  }
+
+  &__mono {
+    font-family: ui-monospace, monospace;
+    font-size: 0.8125rem;
+    word-break: break-all;
+  }
+
+  &__muted {
+    opacity: 0.55;
+  }
+
+  &__lines-cell {
+    max-width: 360px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+::ng-deep .insert-order-summary-page__tooltip-multiline {
+  white-space: pre-line;
+  max-width: 320px;
+}

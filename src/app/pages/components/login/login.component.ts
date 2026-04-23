@@ -60,8 +60,8 @@ export class LoginComponent {
   disabled = computed(() => this.loading() || this.form.invalid);
 
   async onSubmit() {
-    this.router.navigate(['/backoffice']);
-    /*this.loginService.login(this.form.value.email ?? '', this.form.value.password ?? '').subscribe({
+    //this.router.navigate(['/backoffice']);
+    this.loginService.login(this.form.value.email ?? '', this.form.value.password ?? '').subscribe({
       next: (res) => {
         this.tokenStorage.setToken(res.access_token);
         void this.router.navigate(['/backoffice']);
@@ -70,7 +70,7 @@ export class LoginComponent {
         console.error(err);
         this.uiAlert.error(this.httpErrorMessage(err));
       },
-    });*/
+    });
   }
 
   fillDemo() {

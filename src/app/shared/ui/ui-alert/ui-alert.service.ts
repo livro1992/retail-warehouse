@@ -20,6 +20,11 @@ export class UiAlertService {
     return this.open({ type: 'warning', message, title });
   }
 
+  /** Popup modale: operazione riuscita (tono verde da `_colors.scss`). */
+  success(message: string, title?: string): Observable<void> {
+    return this.open({ type: 'success', message, title });
+  }
+
   /**
    * Sostituisce `window.confirm`: stesso stile degli altri popup (`ui-alert-dialog-panel`).
    * Emette `true` se l'utente conferma, altrimenti `false`.

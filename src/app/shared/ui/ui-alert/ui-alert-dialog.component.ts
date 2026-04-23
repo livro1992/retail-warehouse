@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-export type UiAlertKind = 'error' | 'warning';
+export type UiAlertKind = 'error' | 'warning' | 'success';
 
 export interface UiAlertDialogData {
   type: UiAlertKind;
@@ -32,7 +32,13 @@ export class UiAlertDialogComponent {
     if (this.data.confirm) {
       return 'help_outline';
     }
-    return this.data.type === 'error' ? 'error' : 'warning_amber';
+    if (this.data.type === 'error') {
+      return 'error';
+    }
+    if (this.data.type === 'success') {
+      return 'check_circle';
+    }
+    return 'warning_amber';
   });
 
   readonly titleText = computed(() => {
@@ -42,7 +48,13 @@ export class UiAlertDialogComponent {
     if (this.data.confirm) {
       return 'Conferma';
     }
-    return this.data.type === 'error' ? 'Errore' : 'Attenzione';
+    if (this.data.type === 'error') {
+      return 'Errore';
+    }
+    if (this.data.type === 'success') {
+      return 'Operazione completata';
+    }
+    return 'Attenzione';
   });
 
   readonly confirmLabelText = computed(

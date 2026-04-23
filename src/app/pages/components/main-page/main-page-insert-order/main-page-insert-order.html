@@ -1,1 +1,119 @@
-<p>main-page-insert-order works!</p>
+<section class="insert-suborder-page" [attr.aria-busy]="saving()">
+  <header class="insert-suborder-page__header">
+    <div class="insert-suborder-page__heading">
+      <h1 class="insert-suborder-page__title">Inserimento ordini a magazzino</h1>
+      <p class="insert-suborder-page__subtitle"><!--
+        <code class="insert-suborder-page__code">CreateSubOrderDto</code>: righe <code>items</code> con
+        <code>orderItemId</code> (qui: <code>productId</code> scelto dalla lista) e <code>quantity</code>. POST
+        <code class="insert-suborder-page__code">/api/inventory/suborders/</code>.-->
+        <code>Schermata per l'inserimento degli ordini che saranno ritirati a magazzino</code>
+      </p>
+    </div>
+    <div class="insert-suborder-page__header-actions">
+      <a
+        mat-stroked-button
+        routerLink="/backoffice/warehouse-summary"
+        matTooltip="Apri il riepilogo degli ordini registrati con successo"
+        aria-label="Riepilogo ordini inseriti"
+      >
+        <mat-icon>table_rows</mat-icon>
+        Riepilogo
+      </a>
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        [disabled]="saving()"
+        (click)="newSubOrder()"
+      >
+        <mat-icon>note_add</mat-icon>
+        Nuovo sub-order
+      </button>
+    </div>
+  </header>
+
+  <form class="insert-suborder-page__form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="insert-suborder-page__grid insert-suborder-page__grid--2">
+      <mat-form-field appearance="outline" class="insert-suborder-page__field">
+        <mat-label>ID ordine padre (opzionale)</mat-label>
+        <input matInput formControlName="parentOrderId" autocomplete="off" placeholder="UUID ordine padre, se presente" />
+        <mat-hint>Opzionale</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="insert-suborder-page__field">
+        <mat-label>Stato fisico</mat-label>
+        <mat-select formControlName="physicalStatus">
+          @for (st of physicalStatuses; track st) {
+            <mat-option [value]="st">{{ physicalStatusLabels[st] }}</mat-option>
+          }
+        </mat-select>
+        <mat-hint>Valore predefinito fisso (non modificabile).</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="insert-suborder-page__lines-head">
+      <h2 class="insert-suborder-page__lines-title">Lista prodotti</h2>
+      <button
+        mat-stroked-button
+        type="button"
+        [disabled]="saving()"
+        (click)="addItemRow()"
+        class="insert-suborder-page__add-line"
+      >
+        <mat-icon>add</mat-icon>
+        Aggiungi riga
+      </button>
+    </div>
+
+    <div formArrayName="items" class="insert-suborder-page__lines">
+      @for (_ of items.controls; track $index; let i = $index) {
+        <div class="insert-suborder-page__line" [formGroupName]="i">
+          <mat-form-field appearance="outline" class="insert-suborder-page__field insert-suborder-page__field--qty">
+            <mat-label>Quantità</mat-label>
+            <input matInput type="number" min="1" step="1" formControlName="quantity" [disabled]="saving()" />
+            @if (items.at(i).get('quantity')?.touched && items.at(i).get('quantity')?.hasError('required')) {
+              <mat-error>Obbligatorio</mat-error>
+            }
+            @if (items.at(i).get('quantity')?.touched && items.at(i).get('quantity')?.hasError('min')) {
+              <mat-error>Minimo 1</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="insert-suborder-page__field insert-suborder-page__field--grow">
+            <mat-label>Prodotto</mat-label>
+            <mat-select formControlName="productId" [disabled]="saving() || products().length === 0">
+              <mat-option value="">— Seleziona —</mat-option>
+              @for (p of products(); track p.productId) {
+                <mat-option [value]="p.productId">{{ p.name }} ({{ p.productId }})</mat-option>
+              }
+            </mat-select>
+            @if (items.at(i).get('productId')?.touched && items.at(i).get('productId')?.hasError('required')) {
+              <mat-error>Obbligatorio</mat-error>
+            }
+          </mat-form-field>
+
+          <button
+            mat-icon-button
+            type="button"
+            class="insert-suborder-page__remove-line"
+            [disabled]="saving() || items.length <= 1"
+            (click)="removeItemRow(i)"
+            [attr.aria-label]="'Rimuovi riga ' + (i + 1)"
+          >
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+      }
+    </div>
+
+    @if (products().length === 0) {
+      <p class="insert-suborder-page__hint">Nessun prodotto caricato: attendi l’API prodotti o verifica il proxy.</p>
+    }
+
+    <div class="insert-suborder-page__actions">
+      <button mat-flat-button color="primary" type="submit" [disabled]="saving()">
+        {{ saving() ? 'Invio in corso…' : 'Registra ordine' }}
+      </button>
+    </div>
+  </form>
+</section>
