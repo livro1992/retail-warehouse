@@ -1,0 +1,78 @@
+<section class="insert-order-summary-page">
+  <header class="insert-order-summary-page__header">
+    <div class="insert-order-summary-page__heading">
+      <h1 class="insert-order-summary-page__title">Riepilogo ordini inseriti</h1>
+      <p class="insert-order-summary-page__subtitle">
+        Elenco da server (<code>GET /api/order/suborder</code>) e sub-order registrati qui non ancora presenti in risposta (log browser).
+      </p>
+    </div>
+    <div class="insert-order-summary-page__actions">
+      @if (entries().length > 0) {
+        <button mat-stroked-button type="button" color="warn" (click)="clearLog()">
+          <mat-icon>delete_sweep</mat-icon>
+          Svuota elenco
+        </button>
+      }
+      <a mat-stroked-button routerLink="/backoffice/warehouse">
+        <mat-icon>arrow_back</mat-icon>
+        Inserimento
+      </a>
+    </div>
+  </header>
+
+  @if (loading()) {
+    <p class="insert-order-summary-page__empty">Caricamento elenco dal server…</p>
+  } @else if (entries().length === 0) {
+    <p class="insert-order-summary-page__empty">
+      Nessun sub-order in elenco. Dopo «Registra ordine» con esito positivo, le nuove righe restano nel log locale finché non compaiono nella risposta del server.
+    </p>
+  } @else {
+    <div class="insert-order-summary-page__table-wrap">
+      <table mat-table [dataSource]="entries()" class="insert-order-summary-page__table">
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef>Data creazione</th>
+          <td mat-cell *matCellDef="let row">{{ row.createdAt | date: 'short' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="subOrderId">
+          <th mat-header-cell *matHeaderCellDef>ID sub-order</th>
+          <td mat-cell *matCellDef="let row">
+            <code class="insert-order-summary-page__mono">{{ row.subOrderId }}</code>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="parentOrderId">
+          <th mat-header-cell *matHeaderCellDef>Ordine padre</th>
+          <td mat-cell *matCellDef="let row">
+            @if (row.parentOrderId) {
+              <code class="insert-order-summary-page__mono">{{ row.parentOrderId }}</code>
+            } @else {
+              <span class="insert-order-summary-page__muted">—</span>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="physicalStatus">
+          <th mat-header-cell *matHeaderCellDef>Stato fisico</th>
+          <td mat-cell *matCellDef="let row">{{ physicalStatusLabel(row.physicalStatus) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="linesSummary">
+          <th mat-header-cell *matHeaderCellDef>Righe</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="insert-order-summary-page__lines-cell"
+            [matTooltip]="linesTooltip(row)"
+            matTooltipClass="insert-order-summary-page__tooltip-multiline"
+          >
+            {{ linesSummaryText(row) }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  }
+</section>

@@ -63,6 +63,7 @@ export class TokenStorageService {
   isExpired(leewaySeconds = 60): boolean {
     const payload = this.getPayload();
     const exp = payload?.['exp'];
+    
     if (typeof exp !== 'number') {
       return true;
     }

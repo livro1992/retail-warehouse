@@ -34,6 +34,13 @@ export const routes: Routes = [
             ).then((m) => m.MainPageInsertOrder),
         },
         {
+          path: 'warehouse-summary',
+          loadComponent: () =>
+            import(
+              './pages/components/main-page/main-page-insert-order-summary/main-page-insert-order-summary'
+            ).then((m) => m.MainPageInsertOrderSummary),
+        },
+        {
           path: 'pickup',
           loadComponent: () =>
             import(

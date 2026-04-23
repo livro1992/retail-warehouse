@@ -38,6 +38,12 @@ html {
       var(--app-bg-component)
     );
     --app-alert-warning-accent: #{colors.$alert-warning-accent};
+    --app-alert-success-surface: color-mix(
+      in srgb,
+      #{colors.$alert-success-accent} 26%,
+      var(--app-bg-component)
+    );
+    --app-alert-success-accent: #{colors.$alert-success-accent};
   }
 }
 
@@ -73,6 +79,12 @@ html.theme-light {
       var(--app-bg-component)
     );
     --app-alert-warning-accent: #{colors.$alert-warning-accent};
+    --app-alert-success-surface: color-mix(
+      in srgb,
+      #{colors.$alert-success-accent} 22%,
+      var(--app-bg-component)
+    );
+    --app-alert-success-accent: #{colors.$alert-success-accent};
   }
 }
 

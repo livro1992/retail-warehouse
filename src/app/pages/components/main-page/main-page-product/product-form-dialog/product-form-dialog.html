@@ -4,9 +4,14 @@
   </h2>
 
   <div class="product-form-dialog__body" [formGroup]="form" [attr.aria-busy]="saving()">
+    <!--<mat-form-field appearance="outline" class="product-form-dialog__field">
+      <mat-label>ID prodotto</mat-label>
+      <input matInput formControlName="productId" autocomplete="off" />
+    </mat-form-field>-->
     <mat-form-field appearance="outline" class="product-form-dialog__field">
       <mat-label>ID prodotto</mat-label>
       <input matInput formControlName="productId" autocomplete="off" />
+      <mat-hint>Opzionale</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="product-form-dialog__field">
@@ -39,7 +44,7 @@
     <mat-form-field appearance="outline" class="product-form-dialog__field">
       <mat-label>Categoria</mat-label>
       <input matInput formControlName="category" autocomplete="off" />
-      <mat-hint>Opcionale</mat-hint>
+      <mat-hint>Opzionale</mat-hint>
     </mat-form-field>
   </div>
 

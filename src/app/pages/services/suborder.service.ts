@@ -17,4 +17,10 @@ export class SubOrderService extends HttpManager {
     const url = `${Net.apiAddress}${Net.subOrders}`;
     return this.post<SubOrder>(url, dto);
   }
+
+  /** GET `/api/order/suborder` — elenco sub-order dal server. */
+  listOrderSuborders(): Observable<SubOrder[]> {
+    const url = `${Net.apiAddress}${Net.subOrdersPending}`;
+    return this.get<SubOrder[]>(url);
+  }
 }

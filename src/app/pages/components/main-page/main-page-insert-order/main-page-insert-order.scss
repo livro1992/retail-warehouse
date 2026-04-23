@@ -1,9 +1,33 @@
 .insert-suborder-page {
   color: inherit;
-  max-width: 880px;
+  //max-width: 880px;
 
   &__header {
-    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__header-actions mat-icon {
+    margin-right: 4px;
+    vertical-align: middle;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &__heading {
+    min-width: 0;
   }
 
   &__title {
@@ -26,15 +50,6 @@
     padding: 1px 6px;
     border-radius: 6px;
     background: color-mix(in srgb, var(--app-fg) 8%, transparent);
-  }
-
-  &__banner {
-    margin: 0 0 16px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 1px solid color-mix(in srgb, var(--mat-sys-primary) 35%, transparent);
-    background: color-mix(in srgb, var(--mat-sys-primary) 12%, var(--app-bg-component));
-    font-size: 0.9375rem;
   }
 
   &__form {
@@ -127,7 +142,9 @@
 
   &__actions {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
+    align-items: center;
     gap: 12px;
   }
 }

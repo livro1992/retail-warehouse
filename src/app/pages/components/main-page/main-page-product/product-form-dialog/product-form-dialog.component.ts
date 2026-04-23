@@ -66,9 +66,6 @@ export class ProductFormDialogComponent implements OnInit {
         category: p.category ?? '',
       });
       this.form.controls.productId.disable();
-    } else {
-      this.form.controls.productId.setValue('(generato al salvataggio)');
-      this.form.controls.productId.disable();
     }
   }
 
@@ -111,12 +108,13 @@ export class ProductFormDialogComponent implements OnInit {
       return;
     }
 
+    const productIdTrim = raw.productId?.trim() ?? '';
     const dto: CreateProductDto = {
-      productId: crypto.randomUUID(),
       name: raw.name,
       description: raw.description,
       basePrice,
       ...(categoryTrim ? { category: categoryTrim } : {}),
+      ...(productIdTrim ? { productId: productIdTrim } : {}),
     };
 
     this.saving.set(true);

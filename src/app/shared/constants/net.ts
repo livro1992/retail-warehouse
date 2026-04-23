@@ -4,7 +4,9 @@ export enum Net {
     /** GET elenco prodotti inventario (proxy dev → `http://localhost:3000/api/...`). */
     inventoryProducts = '/inventory/products/',
     /** POST creazione sub-order magazzino. */
-    subOrders = '/suborders/create',
+    subOrders = '/suborders',
+    /** GET elenco sub-order in attesa (se esposto dal backend). */
+    subOrdersPending = '/suborders/pending',
     login = '/auth/sign_in',
     register = '/register',
     forgotPassword = '/forgot-password',

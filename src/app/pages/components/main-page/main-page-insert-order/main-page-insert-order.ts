@@ -12,6 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
 import {
@@ -19,9 +21,14 @@ import {
   PHYSICAL_SUB_ORDER_STATUS_LABELS,
   type CreateSubOrderDto,
   type CreateSubOrderItemDto,
+  type SubOrder,
 } from '../../../../data/suborder.types';
 import type { Product } from '../../../../data/product.types';
 import { ProductService } from '../../../services/product.service';
+import {
+  InsertedSubOrdersLogService,
+  type InsertedSubOrderLogEntry,
+} from '../../../services/inserted-suborders-log.service';
 import { SubOrderService } from '../../../services/suborder.service';
 import { UiAlertService } from '../../../../shared/ui';
 
@@ -40,6 +47,8 @@ type ItemRow = FormGroup<{
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    MatTooltipModule,
+    RouterLink,
   ],
   templateUrl: './main-page-insert-order.html',
   styleUrl: './main-page-insert-order.scss',
@@ -48,18 +57,23 @@ export class MainPageInsertOrder implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly productService = inject(ProductService);
   private readonly subOrderService = inject(SubOrderService);
+  private readonly insertedLog = inject(InsertedSubOrdersLogService);
   private readonly uiAlert = inject(UiAlertService);
 
   readonly products = signal<Product[]>([]);
   readonly saving = signal(false);
-  readonly lastSuccessMessage = signal<string | null>(null);
 
   readonly physicalStatuses = Object.values(PhysicalSubOrderStatus);
   readonly physicalStatusLabels = PHYSICAL_SUB_ORDER_STATUS_LABELS;
+  /** Primo valore enum = predefinito per stato fisso a magazzino. */
+  readonly defaultPhysicalStatus = this.physicalStatuses[0] as PhysicalSubOrderStatus;
 
   readonly form = this.fb.group({
     parentOrderId: this.fb.control('', { nonNullable: true }),
-    physicalStatus: this.fb.control<PhysicalSubOrderStatus | ''>('', { nonNullable: true }),
+    physicalStatus: this.fb.control<PhysicalSubOrderStatus>(
+      { value: this.defaultPhysicalStatus, disabled: true },
+      { nonNullable: true },
+    ),
     items: this.fb.array<ItemRow>([this.newItemRow()]),
   });
 
@@ -81,7 +95,7 @@ export class MainPageInsertOrder implements OnInit {
   private newItemRow(): ItemRow {
     return this.fb.group({
       productId: this.fb.control('', { nonNullable: true, validators: [Validators.required] }),
-      quantity: this.fb.control<number | null>(null, {
+      quantity: this.fb.control<number | null>(1, {
         validators: [Validators.required, Validators.min(1)],
       }),
     });
@@ -98,8 +112,30 @@ export class MainPageInsertOrder implements OnInit {
     this.items.removeAt(index);
   }
 
+  private buildLogEntry(created: SubOrder): InsertedSubOrderLogEntry {
+    const nameByProductId = new Map(this.products().map((p) => [p.productId, p.name]));
+    return {
+      subOrderId: created.subOrderId,
+      createdAt: created.createdAt,
+      parentOrderId: created.parentOrderId,
+      physicalStatus: created.physicalStatus,
+      lines: created.items.map((it) => ({
+        orderItemId: it.orderItemId,
+        productLabel: nameByProductId.get(it.orderItemId) ?? it.orderItemId,
+        quantity: it.quantity,
+      })),
+    };
+  }
+
+  /** Ripulisce il modulo per iniziare un altro sub-order (stesso effetto del reset post-invio). */
+  newSubOrder(): void {
+    this.form.patchValue({ parentOrderId: '', physicalStatus: this.defaultPhysicalStatus });
+    this.items.clear();
+    this.items.push(this.newItemRow());
+    this.form.markAsUntouched();
+  }
+
   submit(): void {
-    this.lastSuccessMessage.set(null);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -136,10 +172,11 @@ export class MainPageInsertOrder implements OnInit {
       .pipe(finalize(() => this.saving.set(false)))
       .subscribe({
         next: (created) => {
-          this.lastSuccessMessage.set(`Sub-order ${created.subOrderId} creato.`);
-          this.form.patchValue({ parentOrderId: '', physicalStatus: '' });
-          this.items.clear();
-          this.items.push(this.newItemRow());
+          this.insertedLog.addEntry(this.buildLogEntry(created));
+          this.uiAlert
+            .success(`Sub-order ${created.subOrderId} creato.`, 'Sub-order creato')
+            .subscribe();
+          this.newSubOrder();
         },
         error: () => {
           this.uiAlert
