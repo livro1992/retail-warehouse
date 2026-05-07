@@ -6,6 +6,7 @@ export interface Product {
   name: string;
   description: string;
   basePrice: number;
+  vat: number;
   category?: string;
 }
 

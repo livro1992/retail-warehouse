@@ -55,11 +55,39 @@ export const routes: Routes = [
             ).then((m) => m.MainPageProduct),
         },
         {
+          path: 'cashier',
+          loadComponent: () =>
+            import(
+              './pages/components/main-page/main-page-cashier/main-page-cashier'
+            ).then((m) => m.MainPageCashier),
+        },
+        {
+          path: 'warehouse/suborders',
+          loadComponent: () =>
+            import(
+              './pages/components/main-page/main-page-warehouse-suborders/main-page-warehouse-suborders'
+            ).then((m) => m.MainPageWarehouseSuborders),
+        },
+        {
           path: 'orders/prep',
           loadComponent: () =>
             import(
               './pages/components/main-page/main-page-order-prep/main-page-order-prep'
             ).then((m) => m.MainPageOrderPrep),
+        },
+        {
+          path: 'users',
+          loadComponent: () =>
+            import('./pages/components/main-page/main-page-users/main-page-users').then(
+              (m) => m.MainPageUsers,
+            ),
+        },
+        {
+          path: 'warehouses-admin',
+          loadComponent: () =>
+            import(
+              './pages/components/main-page/main-page-warehouse-admin/main-page-warehouse-admin'
+            ).then((m) => m.MainPageWarehouseAdmin),
         },
       ],
   },

@@ -1,0 +1,96 @@
+<section class="warehouse-suborders-page" [attr.aria-busy]="loading()">
+  <header class="warehouse-suborders-page__header">
+    <div class="warehouse-suborders-page__heading">
+      <h1 class="warehouse-suborders-page__title">Sub-order pendenti</h1>
+      <p class="warehouse-suborders-page__subtitle">
+        Elenco
+        <code class="warehouse-suborders-page__code">GET /api/suborders/pending</code> — consegna con
+        <code class="warehouse-suborders-page__code">PATCH /api/suborders/:id</code>
+      </p>
+    </div>
+  </header>
+
+  <mat-form-field appearance="outline" class="warehouse-suborders-page__field">
+    <mat-label>Filtra</mat-label>
+    <input
+      matInput
+      [value]="filterText()"
+      (input)="setFilter($any($event.target).value)"
+      autocomplete="off"
+      placeholder="id, ordine padre, stato, prodotti"
+      [disabled]="loading()"
+    />
+  </mat-form-field>
+
+  <div class="warehouse-suborders-page__table-wrap">
+    <table mat-table [dataSource]="filteredRows()" class="warehouse-suborders-page__table">
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Data</th>
+        <td mat-cell *matCellDef="let row">{{ row.sub.createdAt | date : 'short' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="subOrderId">
+        <th mat-header-cell *matHeaderCellDef>Sub-order</th>
+        <td mat-cell *matCellDef="let row" class="warehouse-suborders-page__mono">
+          {{ row.sub.subOrderId }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="parentOrderId">
+        <th mat-header-cell *matHeaderCellDef>Ordine padre</th>
+        <td mat-cell *matCellDef="let row" class="warehouse-suborders-page__mono">
+          {{ row.sub.parentOrderId ?? '—' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="physicalStatus">
+        <th mat-header-cell *matHeaderCellDef>Stato</th>
+        <td mat-cell *matCellDef="let row">
+          {{ physicalStatusLabel(row.sub.physicalStatus) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="isPaid">
+        <th mat-header-cell *matHeaderCellDef>Pagato</th>
+        <td mat-cell *matCellDef="let row">
+          @if (row.sub.isPaid) {
+            Sì
+          } @else {
+            No
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="lines">
+        <th mat-header-cell *matHeaderCellDef>Righe</th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          [matTooltip]="row.lineSummary"
+          class="warehouse-suborders-page__lines"
+        >
+          {{ row.lineSummary }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button
+            mat-stroked-button
+            type="button"
+            color="primary"
+            (click)="markShipped(row.sub)"
+            [disabled]="
+              !canMarkShipped(row.sub.physicalStatus) || patchPendingId() === row.sub.subOrderId
+            "
+          >
+            <mat-icon>local_shipping</mat-icon>
+            Segna spedito
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let r; columns: displayedColumns"></tr>
+    </table>
+    @if (loading()) {
+      <p class="warehouse-suborders-page__hint">Caricamento…</p>
+    } @else if (filteredRows().length === 0) {
+      <p class="warehouse-suborders-page__hint">Nessun sub-order da mostrare.</p>
+    }
+  </div>
+</section>

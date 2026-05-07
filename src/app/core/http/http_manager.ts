@@ -12,7 +12,15 @@ export class HttpManager {
     return this.http.post<T>(url, data);
   }
 
-  put<T>(url: string, data: any): Observable<T> {
+  put<T>(url: string, data: unknown): Observable<T> {
     return this.http.put<T>(url, data);
+  }
+
+  patch<T>(url: string, data: unknown): Observable<T> {
+    return this.http.patch<T>(url, data);
+  }
+
+  delete<T>(url: string): Observable<T> {
+    return this.http.delete<T>(url);
   }
 }

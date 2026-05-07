@@ -44,6 +44,9 @@ export class ProductFormDialogComponent implements OnInit {
     basePrice: new FormControl<number | null>(null, {
       validators: [Validators.required, Validators.min(0)],
     }),
+    vat: new FormControl<number | null> (null, {
+      validators: [Validators.required, Validators.min(0)]
+    }),
     category: new FormControl('', { nonNullable: true }),
   });
 
@@ -63,6 +66,7 @@ export class ProductFormDialogComponent implements OnInit {
         name: p.name,
         description: p.description,
         basePrice: p.basePrice,
+        vat: p.vat,
         category: p.category ?? '',
       });
       this.form.controls.productId.disable();
@@ -80,6 +84,7 @@ export class ProductFormDialogComponent implements OnInit {
     }
     const raw = this.form.getRawValue();
     const basePrice = Number(raw.basePrice);
+    const vat = Number(raw.vat);
     const categoryTrim = raw.category?.trim();
 
     if (this.isEdit) {
@@ -113,6 +118,7 @@ export class ProductFormDialogComponent implements OnInit {
       name: raw.name,
       description: raw.description,
       basePrice,
+      vat,
       ...(categoryTrim ? { category: categoryTrim } : {}),
       ...(productIdTrim ? { productId: productIdTrim } : {}),
     };

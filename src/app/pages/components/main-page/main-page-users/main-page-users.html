@@ -1,0 +1,79 @@
+<section class="users-page">
+  <header class="users-page__header">
+    <div class="users-page__heading">
+      <h1 class="users-page__title">Utenti</h1>
+      <p class="users-page__subtitle">Gestione account backoffice (create, edit, delete).</p>
+    </div>
+    <button mat-flat-button color="primary" type="button" (click)="openCreate()">
+      <mat-icon>person_add</mat-icon>
+      Nuovo utente
+    </button>
+  </header>
+
+  <div class="users-page__filters">
+    <mat-form-field appearance="outline" class="users-page__filter users-page__filter--grow">
+      <mat-label>Cerca</mat-label>
+      <input
+        matInput
+        type="search"
+        [value]="filterText()"
+        (input)="filterText.set($any($event.target).value)"
+        placeholder="ID, email, ruolo o magazzino assegnato"
+        autocomplete="off"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="users-page__table-wrap">
+    <table mat-table [dataSource]="filteredUsers()" class="users-page__table">
+      <ng-container matColumnDef="userId">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let row" class="users-page__cell-id">{{ row.userId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Ruolo</th>
+        <td mat-cell *matCellDef="let row">{{ row.role }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="assignedWarehouseId">
+        <th mat-header-cell *matHeaderCellDef>Magazzino assegnato</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.assignedWarehouseId != null ? row.assignedWarehouseId : '—' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="users-page__col-actions"></th>
+        <td mat-cell *matCellDef="let row" class="users-page__col-actions">
+          <button mat-icon-button type="button" aria-label="Modifica utente" (click)="openEdit(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Elimina utente"
+            (click)="deleteUser(row)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    @if (users().length === 0) {
+      <p class="users-page__empty">Nessun utente presente.</p>
+    } @else if (filteredUsers().length === 0) {
+      <p class="users-page__empty">Nessun risultato con il filtro corrente.</p>
+    }
+  </div>
+</section>

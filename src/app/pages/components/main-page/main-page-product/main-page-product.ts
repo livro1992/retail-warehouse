@@ -82,7 +82,8 @@ export class MainPageProduct implements OnInit {
         p.name.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
         (p.category?.toLowerCase().includes(q) ?? false) ||
-        String(p.basePrice).includes(q)
+        String(p.basePrice).includes(q) ||
+        String(p.vat).includes(q)
       );
     });
   });
@@ -93,6 +94,7 @@ export class MainPageProduct implements OnInit {
     'name',
     'basePrice',
     'category',
+    'vat',
     'actions',
   ] as const;
 

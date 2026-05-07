@@ -1,0 +1,181 @@
+<section class="warehouse-admin-page">
+  <header class="warehouse-admin-page__header">
+    <div class="warehouse-admin-page__heading">
+      <h1 class="warehouse-admin-page__title">Amministrazione magazzini</h1>
+      <p class="warehouse-admin-page__subtitle">
+        Gestione CRUD magazzini e associazioni store context → warehouse.
+      </p>
+    </div>
+    <button mat-flat-button color="primary" type="button" (click)="openCreateWarehouse()">
+      <mat-icon>add_business</mat-icon>
+      Nuovo magazzino
+    </button>
+  </header>
+
+  <div class="warehouse-admin-page__filters">
+    <mat-form-field
+      appearance="outline"
+      class="warehouse-admin-page__filter warehouse-admin-page__filter--grow"
+    >
+      <mat-label>Cerca magazzino</mat-label>
+      <input
+        matInput
+        type="search"
+        [value]="filterText()"
+        (input)="filterText.set($any($event.target).value)"
+        placeholder="ID, marketId o nome"
+        autocomplete="off"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="warehouse-admin-page__table-wrap">
+    <table mat-table [dataSource]="filteredWarehouses()" class="warehouse-admin-page__table">
+      <ng-container matColumnDef="warehouseId">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let row" class="warehouse-admin-page__cell-id">
+          {{ row.warehouseId }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="marketId">
+        <th mat-header-cell *matHeaderCellDef>MarketId</th>
+        <td mat-cell *matCellDef="let row">{{ row.marketId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="warehouse-admin-page__col-actions"></th>
+        <td mat-cell *matCellDef="let row" class="warehouse-admin-page__col-actions">
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Modifica magazzino"
+            (click)="openEditWarehouse(row)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Elimina magazzino"
+            (click)="deleteWarehouse(row)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedWarehouseColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedWarehouseColumns"></tr>
+    </table>
+
+    @if (warehouses().length === 0) {
+      <p class="warehouse-admin-page__empty">Nessun magazzino presente.</p>
+    } @else if (filteredWarehouses().length === 0) {
+      <p class="warehouse-admin-page__empty">Nessun risultato con il filtro corrente.</p>
+    }
+  </div>
+
+  <section class="warehouse-admin-page__mapping">
+    <h2 class="warehouse-admin-page__section-title">Associazioni store context</h2>
+    <div class="warehouse-admin-page__mapping-controls">
+      <mat-form-field appearance="outline" class="warehouse-admin-page__filter">
+        <mat-label>marketId</mat-label>
+        <input
+          matInput
+          [value]="mappingMarketId()"
+          (input)="mappingMarketId.set($any($event.target).value)"
+          placeholder="market-1"
+          autocomplete="off"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="warehouse-admin-page__filter">
+        <mat-label>storeContextKey</mat-label>
+        <input
+          matInput
+          [value]="mappingStoreContextKey()"
+          (input)="mappingStoreContextKey.set($any($event.target).value)"
+          placeholder="store-a"
+          autocomplete="off"
+        />
+      </mat-form-field>
+
+      <button mat-stroked-button type="button" (click)="loadMappings()">
+        <mat-icon>refresh</mat-icon>
+        Carica associazioni
+      </button>
+    </div>
+
+    <div class="warehouse-admin-page__mapping-controls">
+      <mat-form-field appearance="outline" class="warehouse-admin-page__filter warehouse-admin-page__filter--grow">
+        <mat-label>Magazzino da associare</mat-label>
+        <mat-select
+          [value]="mappingWarehouseId()"
+          (valueChange)="mappingWarehouseId.set($event)"
+        >
+          @for (warehouse of warehouses(); track warehouse.warehouseId) {
+            <mat-option [value]="warehouse.warehouseId">
+              #{{ warehouse.warehouseId }} · {{ warehouse.marketId }} · {{ warehouse.name }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" type="button" (click)="addMapping()">
+        <mat-icon>add_link</mat-icon>
+        Aggiungi associazione
+      </button>
+    </div>
+
+    <div class="warehouse-admin-page__table-wrap">
+      <table mat-table [dataSource]="mappings()" class="warehouse-admin-page__table">
+        <ng-container matColumnDef="marketId">
+          <th mat-header-cell *matHeaderCellDef>MarketId</th>
+          <td mat-cell *matCellDef="let row">{{ row.marketId }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="storeContextKey">
+          <th mat-header-cell *matHeaderCellDef>StoreContextKey</th>
+          <td mat-cell *matCellDef="let row">{{ row.storeContextKey }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="warehouseId">
+          <th mat-header-cell *matHeaderCellDef>ID warehouse</th>
+          <td mat-cell *matCellDef="let row" class="warehouse-admin-page__cell-id">
+            {{ row.warehouseId }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="warehouse-admin-page__col-actions"></th>
+          <td mat-cell *matCellDef="let row" class="warehouse-admin-page__col-actions">
+            <button
+              mat-icon-button
+              type="button"
+              aria-label="Rimuovi associazione"
+              (click)="removeMapping(row)"
+            >
+              <mat-icon>link_off</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedMappingColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedMappingColumns"></tr>
+      </table>
+
+      @if (mappings().length === 0) {
+        <p class="warehouse-admin-page__empty">
+          Nessuna associazione caricata. Inserisci marketId e storeContextKey, poi premi "Carica associazioni".
+        </p>
+      }
+    </div>
+  </section>
+</section>
