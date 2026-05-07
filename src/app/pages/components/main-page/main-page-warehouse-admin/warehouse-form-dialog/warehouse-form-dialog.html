@@ -1,0 +1,33 @@
+<div class="warehouse-form-dialog">
+  <h2 class="warehouse-form-dialog__title">
+    {{ isEdit ? 'Modifica magazzino' : 'Nuovo magazzino' }}
+  </h2>
+
+  <div class="warehouse-form-dialog__body" [formGroup]="form" [attr.aria-busy]="saving()">
+    <mat-form-field appearance="outline" class="warehouse-form-dialog__field">
+      <mat-label>marketId</mat-label>
+      <input matInput formControlName="marketId" autocomplete="off" />
+      @if (form.controls.marketId.touched && form.controls.marketId.hasError('required')) {
+        <mat-error>Obbligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="warehouse-form-dialog__field">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" autocomplete="off" />
+      @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+        <mat-error>Obbligatorio</mat-error>
+      }
+      @if (form.controls.name.touched && form.controls.name.hasError('minlength')) {
+        <mat-error>Minimo 2 caratteri</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="warehouse-form-dialog__actions">
+    <button mat-button type="button" [disabled]="saving()" (click)="cancel()">Annulla</button>
+    <button mat-flat-button color="primary" type="button" [disabled]="saving()" (click)="save()">
+      {{ saving() ? 'Salvataggio…' : 'Salva' }}
+    </button>
+  </div>
+</div>

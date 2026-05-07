@@ -1,0 +1,61 @@
+.warehouse-suborders-page {
+  color: inherit;
+
+  &__header {
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    opacity: 0.88;
+  }
+
+  &__code {
+    font-family: ui-monospace, monospace;
+    font-size: 0.85em;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--app-fg) 8%, transparent);
+  }
+
+  &__field {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 12px;
+  }
+
+  &__table-wrap {
+    overflow: auto;
+    max-width: 100%;
+  }
+
+  &__table {
+    width: 100%;
+  }
+
+  &__mono {
+    font-family: ui-monospace, monospace;
+    font-size: 0.85em;
+  }
+
+  &__lines {
+    max-width: 280px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__hint {
+    margin: 12px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.85;
+  }
+}

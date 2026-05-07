@@ -1,0 +1,30 @@
+.user-form-dialog {
+  min-width: min(520px, calc(100vw - 32px));
+  max-width: 100%;
+  padding: 8px;
+
+  &__title {
+    margin: 0;
+    padding: 8px 8px 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px 8px 8px;
+  }
+
+  &__field {
+    width: 100%;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 8px 4px;
+  }
+}

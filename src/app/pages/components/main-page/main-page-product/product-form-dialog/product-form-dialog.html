@@ -42,6 +42,14 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="product-form-dialog__field">
+      <mat-label>Iva</mat-label>
+      <input matInput type="number" formControlName="vat" min="0" step="0.1" />
+      @if (form.controls.vat.touched && form.controls.vat.hasError('required')) {
+        <mat-error>Obbligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="product-form-dialog__field">
       <mat-label>Categoria</mat-label>
       <input matInput formControlName="category" autocomplete="off" />
       <mat-hint>Opzionale</mat-hint>

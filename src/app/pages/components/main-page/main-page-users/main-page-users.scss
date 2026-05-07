@@ -1,0 +1,71 @@
+.users-page {
+  color: inherit;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    opacity: 0.85;
+  }
+
+  &__filters {
+    display: flex;
+    margin-bottom: 16px;
+  }
+
+  &__filter {
+    min-width: 180px;
+
+    &--grow {
+      flex: 1 1 280px;
+      min-width: 220px;
+    }
+  }
+
+  &__table-wrap {
+    background: var(--app-bg-component);
+    border: 1px solid color-mix(in srgb, var(--app-fg) 12%, transparent);
+    border-radius: 12px;
+    overflow: auto;
+  }
+
+  &__table {
+    width: 100%;
+    background: transparent;
+  }
+
+  &__cell-id {
+    font-family: ui-monospace, monospace;
+    white-space: nowrap;
+  }
+
+  &__col-actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 24px 16px;
+    text-align: center;
+    font-size: 0.9375rem;
+    opacity: 0.85;
+  }
+}

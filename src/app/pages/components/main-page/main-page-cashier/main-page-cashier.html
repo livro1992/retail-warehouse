@@ -1,0 +1,149 @@
+<section class="cashier-page" [attr.aria-busy]="saving()">
+  <header class="cashier-page__header">
+    <div class="cashier-page__heading">
+      <h1 class="cashier-page__title">Cassa / vendita</h1>
+      <p class="cashier-page__subtitle">
+        Catalogo, carrello e invio come ordine di vendita
+        <code class="cashier-page__code">POST /api/orders/selling</code>
+      </p>
+    </div>
+  </header>
+
+  <div class="cashier-page__grid">
+    <div class="cashier-page__panel">
+      <h2 class="cashier-page__panel-title">Catalogo</h2>
+      <mat-form-field appearance="outline" class="cashier-page__field">
+        <mat-label>Cerca</mat-label>
+        <input
+          matInput
+          [value]="filterText()"
+          (input)="setFilter($any($event.target).value)"
+          autocomplete="off"
+          placeholder="Nome, id, descrizione"
+        />
+      </mat-form-field>
+
+      <div class="cashier-page__table-wrap">
+        <table mat-table [dataSource]="filteredProducts()" class="cashier-page__table">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Prodotto</th>
+            <td mat-cell *matCellDef="let p">
+              <span [matTooltip]="p.description" matTooltipShowDelay="400">{{ p.name }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Prezzo</th>
+            <td mat-cell *matCellDef="let p">{{ p.basePrice | number : '1.2-2' }} €</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let p">
+              <button
+                mat-icon-button
+                type="button"
+                (click)="addToCart(p.productId)"
+                [attr.aria-label]="'Aggiungi ' + p.name"
+                [disabled]="saving()"
+              >
+                <mat-icon>add_shopping_cart</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="catalogColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: catalogColumns"></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="cashier-page__panel">
+      <h2 class="cashier-page__panel-title">Carrello</h2>
+
+      <div class="cashier-page__options">
+        <mat-form-field appearance="outline" class="cashier-page__field">
+          <mat-label>Modalità evasione</mat-label>
+          <mat-select
+            [value]="fulfillment()"
+            (valueChange)="setFulfillment($event)"
+            [disabled]="saving()"
+          >
+            @for (m of fulfillmentModes; track m) {
+              <mat-option [value]="m">{{ fulfillmentLabels[m] }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="cashier-page__field">
+          <mat-label>ID punto vendita (opz.)</mat-label>
+          <input
+            matInput
+            [value]="marketId()"
+            (input)="setMarketId($any($event.target).value)"
+            autocomplete="off"
+            placeholder="marketId se richiesto dal server"
+            [disabled]="saving()"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="cashier-page__table-wrap">
+        <table mat-table [dataSource]="cart()" class="cashier-page__table">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Prodotto</th>
+            <td mat-cell *matCellDef="let line">{{ lineLabel(line) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="unit">
+            <th mat-header-cell *matHeaderCellDef>Unit.</th>
+            <td mat-cell *matCellDef="let line">
+              {{
+                (productById().get(line.productId)?.basePrice ?? 0) | number : '1.2-2'
+              }}
+              €
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Q.tà</th>
+            <td mat-cell *matCellDef="let line">{{ line.quantity }}</td>
+          </ng-container>
+          <ng-container matColumnDef="lineTotal">
+            <th mat-header-cell *matHeaderCellDef>Importo</th>
+            <td mat-cell *matCellDef="let line">{{ lineTotal(line) | number : '1.2-2' }} €</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let line">
+              <button
+                mat-icon-button
+                type="button"
+                (click)="decLine(line.productId)"
+                [disabled]="saving()"
+                aria-label="Riduci o rimuovi"
+              >
+                <mat-icon>remove</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="cartColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: cartColumns"></tr>
+        </table>
+        @if (cart().length === 0) {
+          <p class="cashier-page__empty">Il carrello è vuoto.</p>
+        }
+      </div>
+
+      <div class="cashier-page__footer">
+        <span class="cashier-page__total"
+          >Totale: <strong>{{ total() | number : '1.2-2' }} €</strong></span
+        >
+        <button
+          mat-flat-button
+          color="primary"
+          type="button"
+          [disabled]="saving() || cart().length === 0"
+          (click)="registerSale()"
+        >
+          <mat-icon>point_of_sale</mat-icon>
+          Registra vendita
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

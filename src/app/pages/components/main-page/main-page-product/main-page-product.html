@@ -82,6 +82,13 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="vat">
+        <th mat-header-cell *matHeaderCellDef class="product-page__col-num">Iva</th>
+        <td mat-cell *matCellDef="let row" class="product-page__col-num">
+          {{ row.vat | number: '1.2-2' }} %
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef>Categoria</th>
         <td mat-cell *matCellDef="let row">{{ row.category ?? '—' }}</td>

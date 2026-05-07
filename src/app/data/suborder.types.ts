@@ -55,3 +55,8 @@ export interface SubOrder {
   isPaid: boolean;
   items: SubOrderItem[];
 }
+
+/** Corpo `PATCH` aggiornamento `physicalStatus` (Nest `UpdateSubOrderDto` o sottoinsieme). */
+export interface UpdateSubOrderPhysicalStatusDto {
+  physicalStatus: PhysicalSubOrderStatus;
+}

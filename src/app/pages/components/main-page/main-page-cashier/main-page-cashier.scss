@@ -1,0 +1,94 @@
+.cashier-page {
+  color: inherit;
+
+  &__header {
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    opacity: 0.88;
+  }
+
+  &__code {
+    font-family: ui-monospace, monospace;
+    font-size: 0.85em;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--app-fg) 8%, transparent);
+  }
+
+  &__grid {
+    display: grid;
+    gap: 20px;
+    align-items: start;
+    @media (min-width: 960px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__panel {
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--app-fg) 12%, transparent);
+    background: var(--app-bg-component);
+  }
+
+  &__panel-title {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  &__field {
+    width: 100%;
+  }
+
+  &__options {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  &__table-wrap {
+    margin-bottom: 8px;
+    max-height: 420px;
+    overflow: auto;
+  }
+
+  &__table {
+    width: 100%;
+  }
+
+  &__empty {
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.85;
+  }
+
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  &__total {
+    font-size: 1rem;
+  }
+
+  &__footer mat-icon {
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+}

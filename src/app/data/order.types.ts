@@ -85,3 +85,23 @@ export const ORDER_FULFILLMENT_LABELS: Record<OrderFulfillmentMode, string> = {
   [OrderFulfillmentMode.pickup]: 'Ritiro',
   [OrderFulfillmentMode.delivery]: 'Consegna',
 };
+
+/** Riga per POST vendita: catalogo prodotto + quantità. */
+export interface CreateSellingOrderItemDto {
+  productId: string;
+  quantity: number;
+}
+
+/**
+ * Corpo `POST /api/orders/selling` (o equivalente Nest).
+ * Allinea campi a `CreateSellingOrderDto` lato server; `orderType` spesso implied dalla route.
+ */
+export interface CreateSellingOrderDto {
+  orderType: OrderType.selling;
+  fulfillmentMode: OrderFulfillmentMode;
+  items: CreateSellingOrderItemDto[];
+  /** Se il backend la richiede, valorizzarla; altrimenti il server può usare un default. */
+  marketId?: string;
+  /** In demo: `paid` per registrare subito l’incasso. */
+  paymentStatus?: OrderPaymentStatus;
+}
